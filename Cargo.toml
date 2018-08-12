@@ -4,3 +4,5 @@ version = "0.1.0"
 authors = ["saresend <saresend@usc.edu>"]
 
 [dependencies]
+reqwest = "0.8.7"
+url = "1.7.1"
