@@ -3,10 +3,10 @@
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
-  <component name="JavaScriptSettings">
-    <option name="languageLevel" value="ES6" />
-  </component>
   <component name="RustProjectSettings">
+    <option name="autoUpdateEnabled" value="false" />
+    <option name="compileAllTargets" value="false" />
     <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+    <option name="useCargoCheckAnnotator" value="true" />
   </component>
 </project>
