@@ -10,4 +10,6 @@ mod selenium_core;
 
 mod session;
 
+pub mod webdriver;
+
 extern crate url;

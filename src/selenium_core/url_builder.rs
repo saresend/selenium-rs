@@ -7,7 +7,7 @@ pub struct URLBuilder {
 
 
 impl URLBuilder {
-    pub fn new() -> URLBuilder {
+    pub fn new() -> Self {
         URLBuilder {
             current_url: get_default_url()
         }
@@ -18,8 +18,14 @@ impl URLBuilder {
         self
     }
 
-    pub fn get_url(self) -> Url {
-        self.current_url
+    pub fn add_kv_pair(&mut self, f_token: &str, s_token: &str) -> &mut Self {
+        self.add_element(f_token);
+        self.add_element(s_token);
+        self
+    }
+
+    pub fn get_url(&self) -> Url {
+        self.current_url.clone()
     }
 }
 
