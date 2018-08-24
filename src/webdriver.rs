@@ -1,7 +1,7 @@
 use selenium_core::utils::*;
 use selenium_core::url_builder::URLBuilder;
 use session::SessionHandler;
-use navigation::{URLContainer, WebDriverNavigation};
+use navigation::{TitleContainer, URLContainer, WebDriverNavigation};
 use session::session_structs::*;
 use reqwest;
 use std::collections::BTreeMap;
@@ -82,18 +82,44 @@ impl WebDriverNavigation for WebDriver {
         Ok(())
     }
     fn get_current_url(&self) -> reqwest::Result<String> {
-        unimplemented!();
+        let url = URLBuilder::new()
+            .add_element("session")
+            .add_kv_pair(&self.get_sess_id(), "url")
+            .get_url();
+
+        let container: URLContainer = self.client.get(url).send()?.json()?;
+        Ok(container.url)
     }
     fn go_back(&self) -> reqwest::Result<()> {
-        unimplemented!();
+        let url = URLBuilder::new()
+            .add_kv_pair("session", &self.get_sess_id())
+            .add_element("back")
+            .get_url();
+        self.client.post(url).send()?;
+        Ok(())
     }
     fn go_forward(&self) -> reqwest::Result<()> {
-        unimplemented!();
+        let url = URLBuilder::new()
+            .add_kv_pair("session", &self.get_sess_id())
+            .add_element("forward")
+            .get_url();
+        self.client.post(url).send()?;
+        Ok(())
     }
     fn refresh(&self) -> reqwest::Result<()> {
-        unimplemented!();
+        let url = URLBuilder::new()
+            .add_kv_pair("session", &self.get_sess_id())
+            .add_element("refresh")
+            .get_url();
+        self.client.post(url).send()?;
+        Ok(())
     }
     fn get_title(&self) -> reqwest::Result<String> {
-        unimplemented!();
+        let url = URLBuilder::new()
+            .add_kv_pair("session", &self.get_sess_id())
+            .add_element("title")
+            .get_url();
+        let res: TitleContainer = self.client.post(url).send()?.json()?;
+        Ok(res.title)
     }
 }

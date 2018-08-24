@@ -10,12 +10,19 @@ pub trait WebDriverNavigation {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct URLContainer<'a> {
-    url: &'a str,
+pub struct URLContainer {
+    pub url: String,
 }
 
-impl<'a> URLContainer<'a> {
-    pub fn new(url: &'a str) -> URLContainer<'a> {
-        URLContainer { url }
+impl URLContainer {
+    pub fn new(url: &str) -> URLContainer {
+        URLContainer {
+            url: url.to_string(),
+        }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct TitleContainer {
+    pub title: String,
 }
