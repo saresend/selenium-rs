@@ -31,5 +31,5 @@ impl URLBuilder {
 
 
 fn get_default_url() -> Url {
-    Url::parse("http://localhost:4444/wd/hub").unwrap()
+    Url::parse("http://localhost:4444/wd/hub/").unwrap()
 }

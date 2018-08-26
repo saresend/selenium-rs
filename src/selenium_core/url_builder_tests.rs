@@ -15,5 +15,5 @@ fn create_url_unsafe(url_str: &str) -> Url {
 #[test]
 fn test_default_url() {
     let url_builder = URLBuilder::new();
-    assert_eq!(url_builder.get_url(), create_url_unsafe("http://localhost:4444/wd/hub"));
+    assert_eq!(url_builder.get_url(), create_url_unsafe("http://localhost:4444/wd/hub/"));
 }

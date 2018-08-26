@@ -2,18 +2,18 @@
 #[derive(Serialize, Deserialize)] 
 pub struct NewSessionParams {
     #[serde(rename="desiredCapabilities")]
-    desired_capabilities: DesiredCapabilities, 
+    pub desired_capabilities: DesiredCapabilities, 
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct DesiredCapabilities {
     #[serde(rename="browserName")]
-    browser_name: String, 
+    pub browser_name: String, 
 }
-
 
 #[derive(Serialize, Deserialize)]
 pub struct NewSessionResult {
+    #[serde(rename="sessionId")]
     session_id: String, 
 }
 

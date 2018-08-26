@@ -11,5 +11,6 @@ mod selenium_core;
 mod session;
 
 pub mod webdriver;
+mod webdriver_tests;
 
 extern crate url;
