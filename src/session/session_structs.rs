@@ -23,7 +23,12 @@ impl NewSessionResult {
     }
 }
 
-#[derive(Serialize, Deserialize)] 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Status {
+    value: StatusResult,
+}
+
+#[derive(Serialize, Deserialize, Debug)] 
 pub struct StatusResult {
     ready: bool, 
     message: String,

@@ -43,12 +43,14 @@ impl SessionHandler for WebDriver {
     fn delete_session(&mut self) -> reqwest::Result<()> {
         let session_id = self.get_sess_id();
         let url = URLBuilder::new().add_kv_pair("session/", &session_id).get_url();
+
+        //TODO: 1 - Please make sure the result here is Ok
         let _ = self.client.delete(url).send()?;
         Ok(())
     }
-    fn status(&self) -> reqwest::Result<StatusResult> {
+    fn status(&self) -> reqwest::Result<Status> {
         let url = URLBuilder::new().add_element("status").get_url();
-        let res: StatusResult = self.client.get(url).send()?.json()?;
+        let res: Status = self.client.get(url).send()?.json()?;
         Ok(res)
     }
     fn get_timeouts(&self) -> reqwest::Result<TimeoutResult> {
