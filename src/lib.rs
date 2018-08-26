@@ -2,13 +2,14 @@ extern crate reqwest;
 
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
 extern crate serde;
+extern crate serde_json;
 
 mod macros;
 mod selenium_core;
 
-mod session;
+pub mod session;
+pub mod navigation;
 
 pub mod webdriver;
 mod webdriver_tests;
