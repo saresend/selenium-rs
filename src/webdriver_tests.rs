@@ -43,3 +43,4 @@ fn test_get_status() {
     assert!(webdriver.status().is_ok());
     assert!(webdriver.delete_session().is_ok())
 }
+
