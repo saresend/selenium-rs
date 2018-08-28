@@ -16,7 +16,6 @@ fn test_new_session() {
     assert!(result.is_ok());
 }
 
-
 #[test]
 fn test_delete_session() {
     let mut webdriver = WebDriver::new(SupportedBrowser::Chrome);

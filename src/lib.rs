@@ -11,6 +11,7 @@ mod selenium_core;
 pub mod session;
 pub mod navigation;
 
+pub mod element;
 pub mod webdriver;
 mod webdriver_tests;
 
