@@ -45,7 +45,7 @@ impl SessionHandler for WebDriver {
         let url = URLBuilder::new().add_kv_pair("session/", &session_id).get_url();
 
         //TODO: 1 - Please make sure the result here is Ok
-        let _ = self.client.delete(url).send()?;
+        let _ = self.client.delete(url).send()?.error_for_status()?;
         Ok(())
     }
     fn status(&self) -> reqwest::Result<Status> {
@@ -74,11 +74,11 @@ impl SessionHandler for WebDriver {
 impl WebDriverNavigation for WebDriver {
     fn navigate_to_url(&self, url: &str) -> reqwest::Result<()> {
         let url_val = URLBuilder::new()
-            .add_element("session")
-            .add_kv_pair(&self.get_sess_id(), "url")
+            .add_element("session/")
+            .add_kv_pair(&(self.get_sess_id() + "/"), "url")
             .get_url();
         let post_body = URLContainer::new(&url);
-        self.client.post(url_val).json(&post_body).send()?;
+        self.client.post(url_val).json(&post_body).send()?.error_for_status()?;
         Ok(())
     }
     fn get_current_url(&self) -> reqwest::Result<String> {
@@ -87,7 +87,7 @@ impl WebDriverNavigation for WebDriver {
             .add_kv_pair(&self.get_sess_id(), "url")
             .get_url();
 
-        let container: URLContainer = self.client.get(url).send()?.json()?;
+        let container: URLContainer = self.client.get(url).send()?.error_for_status()?.json()?;
         Ok(container.url)
     }
     fn go_back(&self) -> reqwest::Result<()> {
@@ -95,7 +95,7 @@ impl WebDriverNavigation for WebDriver {
             .add_kv_pair("session", &self.get_sess_id())
             .add_element("back")
             .get_url();
-        self.client.post(url).send()?;
+        self.client.post(url).send()?.error_for_status()?;
         Ok(())
     }
     fn go_forward(&self) -> reqwest::Result<()> {
@@ -103,7 +103,7 @@ impl WebDriverNavigation for WebDriver {
             .add_kv_pair("session", &self.get_sess_id())
             .add_element("forward")
             .get_url();
-        self.client.post(url).send()?;
+        self.client.post(url).send()?.error_for_status()?;
         Ok(())
     }
     fn refresh(&self) -> reqwest::Result<()> {
@@ -111,7 +111,7 @@ impl WebDriverNavigation for WebDriver {
             .add_kv_pair("session", &self.get_sess_id())
             .add_element("refresh")
             .get_url();
-        self.client.post(url).send()?;
+        self.client.post(url).send()?.error_for_status()?;
         Ok(())
     }
     fn get_title(&self) -> reqwest::Result<String> {
@@ -119,7 +119,7 @@ impl WebDriverNavigation for WebDriver {
             .add_kv_pair("session", &self.get_sess_id())
             .add_element("title")
             .get_url();
-        let res: TitleContainer = self.client.post(url).send()?.json()?;
+        let res: TitleContainer = self.client.post(url).send()?.error_for_status()?.json()?;
         Ok(res.title)
     }
 }
