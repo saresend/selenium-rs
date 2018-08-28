@@ -35,7 +35,7 @@ impl SessionHandler for WebDriver {
         let url = URLBuilder::new().add_element("session").get_url();
 
         println!("{}", url);
-        let response: NewSessionResult = self.client.post(url).json(&params).send()?.json()?;
+        let response: NewSessionResult = self.client.post(url).json(&params).send()?.error_for_status()?.json()?;
 
         self.session_id = Some(response.get_session_id());
         Ok(response)
@@ -50,23 +50,23 @@ impl SessionHandler for WebDriver {
     }
     fn status(&self) -> reqwest::Result<Status> {
         let url = URLBuilder::new().add_element("status").get_url();
-        let res: Status = self.client.get(url).send()?.json()?;
+        let res: Status = self.client.get(url).send()?.error_for_status()?.json()?;
         Ok(res)
     }
     fn get_timeouts(&self) -> reqwest::Result<TimeoutResult> {
         let url = URLBuilder::new()
-            .add_kv_pair("session", &self.get_sess_id())
+            .add_kv_pair("session/", &self.get_sess_id())
             .add_element("timeouts")
             .get_url();
-        let res: TimeoutResult = self.client.get(url).send()?.json()?;
+        let res: TimeoutResult = self.client.get(url).send()?.error_for_status()?.json()?;
         Ok(res)
     }
     fn set_timeouts(&self, params: TimeoutResult) -> reqwest::Result<()> {
         let url = URLBuilder::new()
-            .add_kv_pair("session", &self.get_sess_id())
+            .add_kv_pair("session/", &self.get_sess_id())
             .add_element("timeouts")
             .get_url();
-        self.client.post(url).json(&params).send()?;
+        self.client.post(url).json(&params).send()?.error_for_status()?;
         Ok(())
     }
 }

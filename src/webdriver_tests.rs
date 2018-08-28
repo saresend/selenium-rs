@@ -54,5 +54,5 @@ fn test_navigate_to_url() {
     };
     let _ = webdriver.new_session(new_session_params);
     webdriver.navigate_to_url("http://google.com").is_ok();
-   // let _ = webdriver.delete_session();
+    let _ = webdriver.delete_session();
 }
