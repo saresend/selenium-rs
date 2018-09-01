@@ -1,5 +1,6 @@
 
 use element::Element;
+use webdriver::WebDriver;
 
 pub enum SelectStrategy {
   CSS,
@@ -9,7 +10,7 @@ pub enum SelectStrategy {
   XPath, 
 }
 
-fn get_string_for_strategy(strat: SelectStrategy) -> String {
+fn get_string_for_strategy(strat: &SelectStrategy) -> String {
   match strat {
     SelectStrategy::CSS => String::from("css selector"),
     SelectStrategy::LinkText => String::from("link text"),
@@ -24,6 +25,17 @@ pub struct ElementRequest<'a> {
   params: &'a str, 
 }
 
+struct ElementRequestPayload<'a, 'b> {
+  using: &'a str, 
+  value: &'b str,
+}
+
+impl<'a, 'b> ElementRequestPayload<'a, 'b> {
+  pub fn new(using: &'a str, value: &'b str) -> ElementRequestPayload<'a, 'b> {
+    ElementRequestPayload { using, value }
+  }
+}
+
 impl<'a> ElementRequest<'a> {
   pub fn new(strat: SelectStrategy, params: &'a str) -> ElementRequest<'a> {
     ElementRequest {
@@ -32,8 +44,13 @@ impl<'a> ElementRequest<'a> {
     }
   }
 
-  pub fn get_element(&self) -> Element {
+  pub fn get_element(&self, webdriver: &WebDriver) -> Element {
+    // Make a request to the correct url and get the element ID 
+    let string_for_strategy = get_string_for_strategy(&self.strategy);
+    let payload = ElementRequestPayload::new(&string_for_strategy, self.params);
     unimplemented!();
   }
 }
+
+
 
