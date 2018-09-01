@@ -1,20 +1,32 @@
 use reqwest;
+use session_structs::NewSessionRequest;
+use utils::get_browser_string;
 
 pub enum Browser {
-  Chrome, 
-  Firefox,
+    Chrome,
+    Firefox,
 }
 pub struct WebDriver {
-  browser: Browser,
+    browser: String,
+    client: reqwest::Client,
 }
 
+// Contains Creation Methods
 impl WebDriver {
+    pub fn new(browser: Browser) -> WebDriver {
+        let browser = get_browser_string(browser);
+        WebDriver {
+            browser,
+            client: reqwest::Client::new(),
+        }
+    }
+}
 
-  pub fn new(browser: Browser) -> WebDriver {
-    WebDriver { browser } 
-  }
+// Contains Session Handling
+impl WebDriver {
+    pub fn start_session(&self) -> reqwest::Result<()> {
+        let body = NewSessionRequest::new(&self.browser);
 
-  pub fn create_session() -> reqwest::Result<()> {
-    
-  }
+        unimplemented!();
+    }
 }
