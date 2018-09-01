@@ -1,6 +1,6 @@
 use reqwest;
-use session_structs::NewSessionRequest;
-use utils::get_browser_string;
+use session_structs::{NewSessionRequest, NewSessionResponse};
+use utils::{construct_url, get_browser_string};
 
 pub enum Browser {
     Chrome,
@@ -9,6 +9,7 @@ pub enum Browser {
 pub struct WebDriver {
     browser: String,
     client: reqwest::Client,
+    session_id: Option<String>,
 }
 
 // Contains Creation Methods
@@ -18,14 +19,25 @@ impl WebDriver {
         WebDriver {
             browser,
             client: reqwest::Client::new(),
+            session_id: None,
         }
     }
 }
 
 // Contains Session Handling
 impl WebDriver {
-    pub fn start_session(&self) -> reqwest::Result<()> {
+    pub fn start_session(&mut self) -> reqwest::Result<()> {
         let body = NewSessionRequest::new(&self.browser);
-        unimplemented!();
+        let url = construct_url(vec!["session/"]);
+
+        let response: NewSessionResponse = self.client
+            .post(url)
+            .json(&body)
+            .send()?
+            .error_for_status()?
+            .json()?;
+
+        self.session_id = Some(response.get_session_id());
+        Ok(())
     }
 }
