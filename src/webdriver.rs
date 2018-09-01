@@ -26,7 +26,6 @@ impl WebDriver {
 impl WebDriver {
     pub fn start_session(&self) -> reqwest::Result<()> {
         let body = NewSessionRequest::new(&self.browser);
-
         unimplemented!();
     }
 }
