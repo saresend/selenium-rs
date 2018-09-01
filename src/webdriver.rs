@@ -41,3 +41,10 @@ impl WebDriver {
         Ok(())
     }
 }
+
+// Contains Navigation Handling
+impl WebDriver {
+    pub fn navigate(&self, url: &str) -> reqwest::Result<()> {
+        unimplemented!();
+    }
+}
