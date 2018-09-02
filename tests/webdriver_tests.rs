@@ -11,6 +11,6 @@ fn test_intialization() {
 #[test]
 fn test_navigation() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
+    assert!(driver.start_session().is_ok());
     assert!(driver.navigate("http://google.com").is_ok());
 }
