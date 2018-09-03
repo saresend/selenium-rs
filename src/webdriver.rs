@@ -1,11 +1,22 @@
+use element::{Element, ElementRequest, ElementResponse};
 use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse};
-use utils::{construct_url, get_browser_string};
+use std::collections::HashMap;
+use utils::*;
 
 pub enum Browser {
     Chrome,
     Firefox,
 }
+
+pub enum Selector {
+    CSS,
+    LinkText,
+    PartialLinkText,
+    TagName,
+    XPath,
+}
+
 pub struct WebDriver {
     browser: String,
     client: reqwest::Client,
@@ -45,6 +56,36 @@ impl WebDriver {
 // Contains Navigation Handling
 impl WebDriver {
     pub fn navigate(&self, url: &str) -> reqwest::Result<()> {
-        unimplemented!();
+        let sess_id = self.session_id.clone().unwrap();
+        let nav_url = construct_url(vec!["session/", &(sess_id + "/"), "url"]);
+        let mut payload = HashMap::new();
+        payload.insert("url", url);
+        self.client
+            .post(nav_url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?;
+        Ok(())
+    }
+}
+
+// Contains Element Handling
+impl WebDriver {
+    pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
+        let sess_id = self.session_id.clone().unwrap();
+        let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
+
+        let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
+
+        let response: ElementResponse = self.client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+
+        let element = response.parse_into_element(self.session_id.clone().unwrap(), &self.client);
+
+        Ok(element)
     }
 }

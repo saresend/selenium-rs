@@ -3,7 +3,7 @@
 */
 
 use url::Url;
-use webdriver::Browser;
+use webdriver::{Selector, Browser};
 
 pub fn get_browser_string(browser: Browser) -> String {
     match browser {
@@ -23,4 +23,15 @@ pub fn construct_url(elements: Vec<&str>) -> Url {
         url = url.join(element).unwrap();
     }
     url
+}
+
+
+pub fn str_for_selector(selector: Selector) -> String {
+  match selector {
+    Selector::CSS => String::from("css selector"),
+    Selector::LinkText => String::from("link text"),
+    Selector::PartialLinkText => String::from("partial link text"),
+    Selector::TagName => String::from("tag name"),
+    Selector::XPath => String::from("xpath"),
+  }
 }
