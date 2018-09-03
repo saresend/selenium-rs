@@ -43,3 +43,26 @@ impl<'a> Element<'a> {
         }
     }
 }
+
+// Contains implementation for attribute interaction for the element
+impl<'a> Element<'a> {
+    pub fn is_selected(&self) -> reqwest::Result<bool> {
+        unimplemented!();
+    }
+
+    pub fn has_attribute(&self, attribute: &str) -> reqwest::Result<String> {
+        unimplemented!();
+    }
+
+    pub fn get_property(&self, property: &str) -> reqwest::Result<String> {
+        unimplemented!();
+    }
+
+    pub fn get_css_value(&self, css_property: &str) -> reqwest::Result<String> {
+        unimplemented!();
+    }
+
+    pub fn get_text(&self) -> reqwest::Result<String> {
+        unimplemented!();
+    }
+}
