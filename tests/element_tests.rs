@@ -37,3 +37,11 @@ fn test_css_value() {
 
     assert!(search_form.get_css_value("min-width").unwrap() == "980px");
 }
+
+#[test]
+fn test_get_text() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    let search_form = get_element(&mut driver);
+    let result = "About Store\nGmail\nImages\nSign in";
+    assert!(search_form.get_text().unwrap() == result);
+}
