@@ -29,3 +29,11 @@ fn test_get_property() {
 
     // Isn't supported by the webdriver I'm testing, apparently...
 }
+
+#[test]
+fn test_css_value() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    let search_form = get_element(&mut driver);
+
+    assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+}
