@@ -21,3 +21,11 @@ fn test_get_attribute() {
     let search_form = get_element(&mut driver);
     assert!(search_form.get_attribute("class").unwrap() == "jhp");
 }
+
+#[test]
+fn test_get_property() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    let search_form = get_element(&mut driver);
+
+    // Isn't supported by the webdriver I'm testing, apparently...
+}

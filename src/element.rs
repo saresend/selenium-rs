@@ -60,7 +60,17 @@ impl<'a> Element<'a> {
     }
 
     pub fn get_property(&self, property: &str) -> reqwest::Result<String> {
-        unimplemented!();
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "property/",
+            property,
+        ]);
+        let result: AttributeResponse = self.client.get(url).send()?.error_for_status()?.json()?;
+
+        Ok(result.value)
     }
 
     pub fn get_css_value(&self, css_property: &str) -> reqwest::Result<String> {
