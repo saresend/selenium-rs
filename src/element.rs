@@ -1,5 +1,6 @@
 use element_structs::*;
 use reqwest;
+use serde_json;
 use utils::construct_url;
 
 #[derive(Serialize, Deserialize)]
@@ -38,14 +39,24 @@ impl<'a> Element<'a> {
             &(self.session_id.clone() + "/"),
             "element/",
             &(self.element_id.clone() + "/"),
-            "selected/",
+            "selected",
         ]);
         let response: SelectedResponse = self.client.get(url).send()?.error_for_status()?.json()?;
-        Ok(response.selected)
+        Ok(response.value)
     }
 
-    pub fn has_attribute(&self, attribute: &str) -> reqwest::Result<String> {
-        unimplemented!();
+    pub fn get_attribute(&self, attribute: &str) -> reqwest::Result<String> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "attribute/",
+            attribute,
+        ]);
+        let result: AttributeResponse = self.client.get(url).send()?.error_for_status()?.json()?;
+
+        Ok(result.value)
     }
 
     pub fn get_property(&self, property: &str) -> reqwest::Result<String> {
