@@ -1,4 +1,5 @@
-use element::{Element, ElementRequest, ElementResponse};
+use element::{Element, ElementRequest};
+use element_structs::ElementResponse;
 use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse};
 use std::collections::HashMap;

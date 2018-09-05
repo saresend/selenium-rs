@@ -6,8 +6,9 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
-pub mod webdriver;
 pub mod element;
+pub mod webdriver;
 
+mod element_structs;
 mod session_structs;
 mod utils;

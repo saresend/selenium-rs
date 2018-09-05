@@ -1,20 +1,6 @@
+use element_structs::*;
 use reqwest;
-
-#[derive(Deserialize)]
-pub struct ElementResponse {
-    #[serde(rename = "ELEMENT")]
-    element_id: String,
-}
-
-impl<'a> ElementResponse {
-    pub fn parse_into_element(
-        self,
-        session_id: String,
-        client: &'a reqwest::Client,
-    ) -> Element<'a> {
-        Element::new(self.element_id, session_id, client)
-    }
-}
+use utils::construct_url;
 
 #[derive(Serialize, Deserialize)]
 pub struct ElementRequest {
@@ -47,7 +33,15 @@ impl<'a> Element<'a> {
 // Contains implementation for attribute interaction for the element
 impl<'a> Element<'a> {
     pub fn is_selected(&self) -> reqwest::Result<bool> {
-        unimplemented!();
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "selected/",
+        ]);
+        let response: SelectedResponse = self.client.get(url).send()?.error_for_status()?.json()?;
+        Ok(response.selected)
     }
 
     pub fn has_attribute(&self, attribute: &str) -> reqwest::Result<String> {
