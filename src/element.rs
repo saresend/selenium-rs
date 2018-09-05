@@ -100,3 +100,49 @@ impl<'a> Element<'a> {
         Ok(result.value)
     }
 }
+
+// Implements Element Interactability
+
+impl<'a> Element<'a> {
+    pub fn click(&self) -> reqwest::Result<()> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "click",
+        ]);
+        self.client.post(url).send()?.error_for_status()?;
+        Ok(())
+    }
+    pub fn clear(&self) -> reqwest::Result<()> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "clear",
+        ]);
+        self.client.post(url).send()?.error_for_status()?;
+
+        Ok(())
+    }
+    pub fn type_text(&self, input: &str) -> reqwest::Result<()> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "value",
+        ]);
+
+        let data = ValueRequest::new(input);
+        self.client
+            .post(url)
+            .json(&data)
+            .send()?
+            .error_for_status()?;
+
+        Ok(())
+    }
+}

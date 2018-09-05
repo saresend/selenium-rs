@@ -32,3 +32,14 @@ pub struct AttributeResponse {
     session_id: String,
     pub value: String,
 }
+
+#[derive(Serialize)]
+pub struct ValueRequest<'a> {
+    text: &'a str,
+}
+
+impl<'a> ValueRequest<'a> {
+    pub fn new(text: &'a str) -> ValueRequest<'a> {
+        ValueRequest { text }
+    }
+}
