@@ -54,6 +54,11 @@ impl WebDriver {
         self.session_id = Some(response.get_session_id());
         Ok(())
     }
+
+    pub fn delete_session(self) {
+        let url = construct_url(vec!["session/", &self.session_id.clone().unwrap()]);
+        let _ = self.client.delete(url).send();
+    }
 }
 
 // Contains Navigation Handling

@@ -15,6 +15,7 @@ impl ElementRequest {
     }
 }
 
+#[derive(Debug)]
 pub struct Element<'a> {
     element_id: String,
     session_id: String,

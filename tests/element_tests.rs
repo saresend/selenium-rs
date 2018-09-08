@@ -9,39 +9,66 @@ fn get_element(driver: &mut WebDriver) -> Element {
 }
 
 #[test]
+fn test_get_multiple_elements() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    {
+        let elements = driver.query_element(Selector::CSS, "a").unwrap();
+        println!("{:?}", elements);
+    }
+
+    driver.delete_session();
+}
+
+#[test]
 fn test_is_selected() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-    assert!(search_form.is_selected().unwrap() == false);
+    {
+        let search_form = get_element(&mut driver);
+        assert!(search_form.is_selected().unwrap() == false);
+    }
+
+    driver.delete_session();
 }
 
 #[test]
 fn test_get_attribute() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-    assert!(search_form.get_attribute("class").unwrap() == "jhp");
+    {
+        let search_form = get_element(&mut driver);
+        assert!(search_form.get_attribute("class").unwrap() == "jhp");
+    }
+    driver.delete_session();
 }
 
 #[test]
 fn test_get_property() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-
+    {
+        let search_form = get_element(&mut driver);
+    }
+    driver.delete_session();
     // Isn't supported by the webdriver I'm testing, apparently...
 }
 
 #[test]
 fn test_css_value() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-
-    assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+    {
+        let search_form = get_element(&mut driver);
+        assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+    }
+    driver.delete_session();
 }
 
 #[test]
 fn test_get_text() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-    let result = "About Store\nGmail\nImages\nSign in";
-    assert!(search_form.get_text().unwrap() == result);
+    {
+        let search_form = get_element(&mut driver);
+        let result = "About Store\nGmail\nImages\nSign in";
+        assert!(search_form.get_text().unwrap() == result);
+    }
+    driver.delete_session();
 }
