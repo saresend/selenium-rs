@@ -137,6 +137,8 @@ impl<'a> Element<'a> {
             "value",
         ]);
 
+        println!("{:?}", url);
+
         let data = ValueRequest::new(input);
         self.client
             .post(url)

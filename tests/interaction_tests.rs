@@ -24,7 +24,8 @@ fn test_search() {
     let mut webdriver = WebDriver::new(Browser::Chrome);
     {
         get_search_bar(&mut webdriver).type_text("testing");
-        let google_search_button = webdriver.query_element(Selector::CSS, "btnK");
+        let google_search_button = webdriver.query_element(Selector::CSS, "#gbqfbb").unwrap();
+        assert!(google_search_button.click().is_ok());
     }
-    webdriver.delete_session();
+    // webdriver.delete_session();
 }

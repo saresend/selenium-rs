@@ -35,11 +35,11 @@ pub struct AttributeResponse {
 
 #[derive(Serialize)]
 pub struct ValueRequest<'a> {
-    text: &'a str,
+    value: Vec<&'a str>,
 }
 
 impl<'a> ValueRequest<'a> {
     pub fn new(text: &'a str) -> ValueRequest<'a> {
-        ValueRequest { text }
+        ValueRequest { value: vec![text] }
     }
 }
