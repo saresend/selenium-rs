@@ -3,8 +3,6 @@ extern crate selenium_rs;
 use selenium_rs::webdriver::*;
 use selenium_rs::element::Element;
 
-//TODO: Implement tests for interactability
-
 fn get_search_bar(driver: &mut WebDriver) -> Element {
     driver.start_session();
     driver.navigate("http://google.com");
@@ -13,12 +11,15 @@ fn get_search_bar(driver: &mut WebDriver) -> Element {
 
 #[test]
 fn test_enter_text() {
-    let webdriver = WebDriver::new(Browser::Chrome).unwrap();
-    let search_bar = get_search_bar();
+    let mut webdriver = WebDriver::new(Browser::Chrome);
+    let search_bar = get_search_bar(&mut webdriver);
     assert!(search_bar.type_text("testing").is_ok());
 }
 
 #[test]
 fn test_search() {
-    get_search_bar().type_text("testing");
+    let mut webdriver = WebDriver::new(Browser::Chrome);
+    get_search_bar(&mut webdriver).type_text("testing");
+    let google_search_button = webdriver.query_element(Selector::CSS, "btnK").unwrap();
+    assert!(google_search_button.click().is_ok());
 }
