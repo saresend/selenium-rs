@@ -7,15 +7,13 @@ Selenium-rs is a simple client for the [selenium webdriver](https://www.selenium
 
 ## Installation 
 
-```
-TODO - once published to crates.io 
-```
-
-## Documentation: 
+```toml
+[dependencies]
+selenium-rs = "0.1.0"
 
 ```
-TODO - once documentation is published 
-```
+
+## Documentation: [docs.rs](https://docs.rs/selenium-rs/0.1.0/selenium_rs/)
 
 ## Current Status 
 
