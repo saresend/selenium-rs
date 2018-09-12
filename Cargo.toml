@@ -11,6 +11,7 @@ homepage = "https://github.com/saresend/selenium-rs"
 repository = "https://github.com/saresend/selenium-rs"
 readme = "README.md"
 license = "MIT"
+keywords = ["selenium", "testing", "browser", "automation"]
 
 
 
