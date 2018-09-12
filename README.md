@@ -20,37 +20,41 @@ Note that selenium-rs also requires a running instance of the selenium webdriver
 ## Sample Usage 
 
 ### Example - Navigating to a web page 
-    ```rust 
-    use selenium_rs::webdriver::{Browser,WebDriver};
-    
-    let mut driver= WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("https://www.rust-lang.org"); 
-    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
-    ```
+```rust 
+use selenium_rs::webdriver::{Browser,WebDriver};
+
+let mut driver= WebDriver::new(Browser::Chrome);
+driver.start_session();
+
+driver.navigate("https://www.rust-lang.org"); 
+assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
+```
 
 ### Performing a google search 
- ```rust 
-    use selenium_rs::webdriver::{Browser, WebDriver, Selector};
-    let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("http://google.com");
-    let search_bar = driver.query_element(Selector::CSS, ".gLFyf").unwrap();
-    search_bar.type_text("selenium-rs github");
-    let search_button = driver.query_element(Selector::CSS, "#gbqfbb").unwrap();
-    search_button.click();
-    ```
+```rust 
+use selenium_rs::webdriver::{Browser, WebDriver, Selector};
+let mut driver = WebDriver::new(Browser::Chrome);
+
+driver.start_session();
+driver.navigate("http://google.com");
+let search_bar = driver.query_element(Selector::CSS, ".gLFyf").unwrap();
+
+search_bar.type_text("selenium-rs github");
+let search_button = driver.query_element(Selector::CSS, "#gbqfbb").unwrap();
+search_button.click();
+```
 
 ### Example - Inspecting attributes of an element 
-  ```rust 
-        use selenium_rs::webdriver::{Selector, Browser, WebDriver};
-        use selenium_rs::element::Element;
-        let mut driver = WebDriver::new(Browser::Chrome);
-        driver.start_session();
-        driver.navigate("http://www.google.com");
-        let search_form =  driver.query_element(Selector::CSS, "#searchform").unwrap();
-        assert!(search_form.get_css_value("min-width").unwrap() == "980px");
-    ```
+```rust 
+    use selenium_rs::webdriver::{Selector, Browser, WebDriver};
+    use selenium_rs::element::Element;
+    
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://www.google.com");
+    let search_form =  driver.query_element(Selector::CSS, "#searchform").unwrap();
+    assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+```
 
 ## Current Status 
 
