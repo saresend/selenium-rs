@@ -1,19 +1,29 @@
+/*! 
+
+    Element enables most of the site interaction, and wraps user interactions such as typing text and clicking
+    on things. Note that each element is tied to the specific session (currently, we
+    can't hold on to the same element across sessions).
+
+
+    # Example - Inspecting attributes of an element 
+
+    ```rust 
+        use selenium_rs::webdriver::{Selector, Browser, WebDriver};
+        use selenium_rs::element::Element;
+
+        let mut driver = WebDriver::new(Browser::Chrome);
+        driver.start_session();
+        driver.navigate("http://www.google.com");
+        let search_form =  driver.query_element(Selector::CSS, "#searchform").unwrap();
+
+        assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+    ```
+*/
+
 use element_structs::*;
 use reqwest;
 use serde_json;
 use utils::construct_url;
-
-#[derive(Serialize, Deserialize)]
-pub struct ElementRequest {
-    using: String,
-    value: String,
-}
-
-impl ElementRequest {
-    pub fn new(using: String, value: String) -> ElementRequest {
-        ElementRequest { using, value }
-    }
-}
 
 #[derive(Debug)]
 pub struct Element<'a> {
@@ -46,6 +56,7 @@ impl<'a> Element<'a> {
         Ok(response.value)
     }
 
+    /// gets an element attribute for the given element
     pub fn get_attribute(&self, attribute: &str) -> reqwest::Result<String> {
         let url = construct_url(vec![
             "session/",
@@ -60,6 +71,7 @@ impl<'a> Element<'a> {
         Ok(result.value)
     }
 
+    /// retrieves the property value for the given element, if it exists
     pub fn get_property(&self, property: &str) -> reqwest::Result<String> {
         let url = construct_url(vec![
             "session/",
@@ -74,6 +86,7 @@ impl<'a> Element<'a> {
         Ok(result.value)
     }
 
+    /// Gets a css property for the given element, if it exists
     pub fn get_css_value(&self, css_property: &str) -> reqwest::Result<String> {
         let url = construct_url(vec![
             "session/",
@@ -88,6 +101,7 @@ impl<'a> Element<'a> {
         Ok(result.value)
     }
 
+    /// Gets the text for a given element, if it exists or makes sense
     pub fn get_text(&self) -> reqwest::Result<String> {
         let url = construct_url(vec![
             "session/",
@@ -116,6 +130,8 @@ impl<'a> Element<'a> {
         self.client.post(url).send()?.error_for_status()?;
         Ok(())
     }
+
+    /// Clears a content editable element's text value, or returns an error
     pub fn clear(&self) -> reqwest::Result<()> {
         let url = construct_url(vec![
             "session/",
@@ -128,6 +144,8 @@ impl<'a> Element<'a> {
 
         Ok(())
     }
+
+    /// Tries to type into a content editable element
     pub fn type_text(&self, input: &str) -> reqwest::Result<()> {
         let url = construct_url(vec![
             "session/",

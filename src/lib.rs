@@ -1,6 +1,6 @@
 /*! 
     This library provides a client API for the selenium webdriver specification: 
-    [https://www.w3.org/TR/webdriver1/]
+    [](https://www.w3.org/TR/webdriver1/)
 
     #Usage 
 

@@ -1,4 +1,26 @@
-use element::{Element, ElementRequest};
+/*! 
+    
+    This provides the primary point of interaction with the Selenium WebDriver API. We 
+    can use it to create and manage sessions, as well as use it to spawn elements from the 
+    current browsing context. 
+
+    # Example - Navigating to a web page 
+
+    ```rust 
+    use selenium_rs::webdriver::{Browser,WebDriver};
+    
+    let mut driver= WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("https://www.rust-lang.org"); 
+    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
+
+    ```
+
+
+
+*/
+
+use element::Element;
 use element_structs::ElementResponse;
 use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
@@ -18,6 +40,18 @@ pub enum Selector {
     PartialLinkText,
     TagName,
     XPath,
+}
+
+#[derive(Serialize, Deserialize)]
+struct ElementRequest {
+    using: String,
+    value: String,
+}
+
+impl ElementRequest {
+    pub fn new(using: String, value: String) -> ElementRequest {
+        ElementRequest { using, value }
+    }
 }
 
 /// The WebDriver is the primary way by which interaction
