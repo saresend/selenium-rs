@@ -22,9 +22,12 @@
 
 use element_structs::*;
 use reqwest;
-use serde_json;
 use utils::construct_url;
 
+/// Element provides an interface from which to inspect and interact with the requested elements
+/// on the page. The general flow involves navigating to your webpage in question, and then
+/// requesting a specific element through the query API, and then using the returned element to
+/// inspect the element on the page
 #[derive(Debug)]
 pub struct Element<'a> {
     element_id: String,

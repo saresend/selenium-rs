@@ -13,11 +13,7 @@
     driver.start_session();
     driver.navigate("https://www.rust-lang.org"); 
     assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
-
     ```
-
-
-
 */
 
 use element::Element;
@@ -26,8 +22,6 @@ use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
 use std::collections::HashMap;
 use utils::*;
-
-use serde_json;
 
 pub enum Browser {
     Chrome,

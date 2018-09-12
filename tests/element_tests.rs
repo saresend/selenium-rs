@@ -26,7 +26,7 @@ fn test_is_selected() {
     let mut driver = WebDriver::new(Browser::Chrome);
     {
         let search_form = get_element(&mut driver);
-        assert!(search_form.is_selected().unwrap() == false);
+        assert_eq!(search_form.is_selected().unwrap(), false);
     }
 
     driver.delete_session();
@@ -37,7 +37,10 @@ fn test_get_attribute() {
     let mut driver = WebDriver::new(Browser::Chrome);
     {
         let search_form = get_element(&mut driver);
-        assert!(search_form.get_attribute("class").unwrap() == "jhp");
+        assert_eq!(
+            search_form.get_attribute("class").unwrap(),
+            String::from("jhp")
+        );
     }
     driver.delete_session();
 }
@@ -57,7 +60,10 @@ fn test_css_value() {
     let mut driver = WebDriver::new(Browser::Chrome);
     {
         let search_form = get_element(&mut driver);
-        assert!(search_form.get_css_value("min-width").unwrap() == "980px");
+        assert_eq!(
+            search_form.get_css_value("min-width").unwrap(),
+            String::from("980px")
+        );
     }
     driver.delete_session();
 }
