@@ -37,3 +37,15 @@ impl NewSessionResponse {
         self.session_id
     }
 }
+
+// Title Response Object
+#[derive(Deserialize)]
+pub struct TitleResponse {
+    value: String,
+}
+
+impl TitleResponse {
+    pub fn get_title(self) -> String {
+        self.value
+    }
+}

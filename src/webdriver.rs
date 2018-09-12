@@ -1,7 +1,7 @@
 use element::{Element, ElementRequest};
 use element_structs::ElementResponse;
 use reqwest;
-use session_structs::{NewSessionRequest, NewSessionResponse};
+use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
 use std::collections::HashMap;
 use utils::*;
 
@@ -53,6 +53,17 @@ impl WebDriver {
 
         self.session_id = Some(response.get_session_id());
         Ok(())
+    }
+
+    pub fn get_current_url(&self) -> reqwest::Result<String> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone().unwrap() + "/"),
+            "url",
+        ]);
+        let response: TitleResponse = self.client.get(url).send()?.error_for_status()?.json()?;
+
+        Ok(response.get_title())
     }
 
     pub fn delete_session(self) {

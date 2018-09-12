@@ -1,7 +1,7 @@
 extern crate selenium_rs;
 
-use selenium_rs::webdriver::*;
 use selenium_rs::element::Element;
+use selenium_rs::webdriver::*;
 
 fn get_search_bar(driver: &mut WebDriver) -> Element {
     driver.start_session();
@@ -27,5 +27,5 @@ fn test_search() {
         let google_search_button = webdriver.query_element(Selector::CSS, "#gbqfbb").unwrap();
         assert!(google_search_button.click().is_ok());
     }
-    // webdriver.delete_session();
+    webdriver.delete_session();
 }
