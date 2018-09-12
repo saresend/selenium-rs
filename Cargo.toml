@@ -1,6 +1,6 @@
 [package]
 name = "selenium-rs"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["saresend <saresend@usc.edu>"]
 description = """
 selenium-rs is a client for the selenium webdriver spec (https://www.w3.org/TR/webdriver1/). It 
