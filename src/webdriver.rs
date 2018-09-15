@@ -103,14 +103,6 @@ impl WebDriver {
 
         Ok(response.get_title())
     }
-
-    /// Deletes the session, consuming itself in the process
-    /// TODO: Since we must manually add a new session, it would definitely stand to reason that we
-    /// should not consume the webdriver here, or, be tied specifically to a single session
-    pub fn delete_session(self) {
-        let url = construct_url(vec!["session/", &self.session_id.unwrap()]);
-        let _ = self.client.delete(url).send();
-    }
 }
 
 // Contains Navigation Handling
@@ -147,5 +139,12 @@ impl WebDriver {
             .json()?;
         let element = response.parse_into_element(&self.client);
         Ok(element)
+    }
+}
+
+impl Drop for WebDriver {
+    fn drop(&mut self) {
+        let url = construct_url(vec!["session/", &self.session_id.clone().unwrap()]);
+        let _ = self.client.delete(url).send();
     }
 }
