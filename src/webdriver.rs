@@ -144,7 +144,9 @@ impl WebDriver {
 
 impl Drop for WebDriver {
     fn drop(&mut self) {
-        let url = construct_url(vec!["session/", &self.session_id.clone().unwrap()]);
-        let _ = self.client.delete(url).send();
+        if let Some(ref id) = self.session_id {
+            let url = construct_url(vec!["session/", id]);
+            let _ = self.client.delete(url).send();
+        }
     }
 }
