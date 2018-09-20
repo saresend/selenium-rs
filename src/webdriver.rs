@@ -103,6 +103,18 @@ impl WebDriver {
 
         Ok(response.get_title())
     }
+
+    pub fn get_title(&self) -> reqwest::Result<String> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone().unwrap() + "/"),
+            "title",
+        ]);
+
+        let response: TitleResponse = self.client.get(url).send()?.error_for_status()?.json()?;
+
+        Ok(response.get_title())
+    }
 }
 
 // Contains Navigation Handling

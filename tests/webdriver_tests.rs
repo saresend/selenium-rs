@@ -24,7 +24,7 @@ fn test_element_search_by_id() {
 }
 
 #[test]
-fn test_get_title() {
+fn test_get_current_url() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
@@ -32,4 +32,14 @@ fn test_get_title() {
     assert!(
         driver.get_current_url().unwrap() == String::from("https://www.google.com/?gws_rd=ssl")
     );
+}
+
+#[test]
+fn test_get_title() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    let title = driver.get_title().unwrap();
+
+    assert!(title == String::from("Google"));
 }
