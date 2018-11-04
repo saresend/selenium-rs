@@ -6,7 +6,7 @@
 
     ```toml
     [dependencies]
-    selenium_rs = "0.1"
+    selenium-rs = "0.1"
     ```
     
     and add this to your root crate: 
