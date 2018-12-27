@@ -12,7 +12,7 @@
     let mut driver= WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("https://www.rust-lang.org"); 
-    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
+    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/"));
     ```
 */
 

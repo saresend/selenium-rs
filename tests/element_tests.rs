@@ -55,6 +55,5 @@ fn test_css_value() {
 fn test_get_text() {
     let mut driver = WebDriver::new(Browser::Chrome);
     let search_form = get_element(&mut driver);
-    let result = "About Store\nGmail\nImages\nSign in";
-    assert!(search_form.get_text().unwrap() == result);
+    assert!(search_form.get_text().unwrap().contains("Gmail\n"));
 }
