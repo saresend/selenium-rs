@@ -58,3 +58,11 @@ impl<'a> ValueRequest<'a> {
         ValueRequest { value: vec![text] }
     }
 }
+
+#[derive(Deserialize)]
+pub struct ExecuteScriptResponse<T> {
+    #[serde(rename = "sessionId")]
+    session_id: String,
+    status: i32,
+    pub value: T,
+}
