@@ -17,7 +17,7 @@
 */
 
 use element::Element;
-use element_structs::ElementResponse;
+use element_structs::{ElementResponse, ElementsResponse};
 use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
 use std::collections::HashMap;
@@ -158,6 +158,21 @@ impl WebDriver {
             .json()?;
         let element = response.parse_into_element(&self.client);
         Ok(element)
+    }
+
+    /// Requests a list of elements from the webpage, given the specified selector and query string
+    pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+        let sess_id = self.session_id.clone().unwrap();
+        let url = construct_url(vec!["session/", &(sess_id + "/"), "elements"]);
+        let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
+        let response: ElementsResponse = self.client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+        let elements = response.parse_into_elements(&self.client);
+        Ok(elements)
     }
 }
 

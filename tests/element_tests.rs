@@ -18,6 +18,15 @@ fn test_get_multiple_elements() {
 }
 
 #[test]
+fn test_get_element_list() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    assert_eq!(driver.query_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
+    assert!(driver.query_elements(Selector::CSS, "a").unwrap().len() > 1);
+}
+
+#[test]
 fn test_is_selected() {
     let mut driver = WebDriver::new(Browser::Chrome);
     let search_form = get_element(&mut driver);

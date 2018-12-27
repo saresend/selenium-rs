@@ -15,6 +15,14 @@ pub struct ElementResponse {
 }
 
 #[derive(Deserialize)]
+pub struct ElementsResponse {
+    #[serde(rename = "sessionId")]
+    session_id: String,
+    status: i32,
+    value: Vec<ElemValue>,
+}
+
+#[derive(Deserialize)]
 struct ElemValue {
     #[serde(rename = "ELEMENT")]
     element_id: String,
@@ -23,6 +31,13 @@ struct ElemValue {
 impl<'a> ElementResponse {
     pub fn parse_into_element(self, client: &'a reqwest::Client) -> Element<'a> {
         Element::new(self.value.element_id, self.session_id, client)
+    }
+}
+
+impl<'a> ElementsResponse {
+    pub fn parse_into_elements(self, client: &'a reqwest::Client) -> Vec<Element<'a>> {
+        let session_id = self.session_id;
+        self.value.into_iter().map(|value| Element::new(value.element_id, session_id.clone(), client)).collect()
     }
 }
 
