@@ -27,7 +27,7 @@ let mut driver= WebDriver::new(Browser::Chrome);
 driver.start_session();
 
 driver.navigate("https://www.rust-lang.org"); 
-assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
+assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/"));
 ```
 
 ### Performing a google search 
@@ -37,10 +37,11 @@ let mut driver = WebDriver::new(Browser::Chrome);
 
 driver.start_session();
 driver.navigate("http://google.com");
-let search_bar = driver.query_element(Selector::CSS, ".gLFyf").unwrap();
+let search_bar = driver.query_element(Selector::CSS, "input[maxlength=\"2048\"]").unwrap();
 
 search_bar.type_text("selenium-rs github");
-let search_button = driver.query_element(Selector::CSS, "#gbqfbb").unwrap();
+let search_button = driver.query_element(Selector::CSS, "input[name=\"btnK\"]").unwrap();
+search_button.click();
 search_button.click();
 ```
 
