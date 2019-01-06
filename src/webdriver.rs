@@ -12,12 +12,12 @@
     let mut driver= WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("https://www.rust-lang.org"); 
-    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/en-US/"));
+    assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/"));
     ```
 */
 
 use element::Element;
-use element_structs::ElementResponse;
+use element_structs::{ElementResponse, ElementsResponse, ExecuteScriptResponse};
 use reqwest;
 use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
 use std::collections::HashMap;
@@ -45,6 +45,18 @@ struct ElementRequest {
 impl ElementRequest {
     pub fn new(using: String, value: String) -> ElementRequest {
         ElementRequest { using, value }
+    }
+}
+
+#[derive(Serialize)]
+struct ExecuteScriptRequest {
+    script: String,
+    args: Vec<serde_json::Value>,
+}
+
+impl ExecuteScriptRequest {
+    pub fn new(script: String, args: Vec<serde_json::Value>) -> ExecuteScriptRequest {
+        ExecuteScriptRequest { script, args }
     }
 }
 
@@ -158,6 +170,38 @@ impl WebDriver {
             .json()?;
         let element = response.parse_into_element(&self.client);
         Ok(element)
+    }
+
+    /// Requests a list of elements from the webpage, given the specified selector and query string
+    pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+        let sess_id = self.session_id.clone().unwrap();
+        let url = construct_url(vec!["session/", &(sess_id + "/"), "elements"]);
+        let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
+        let response: ElementsResponse = self.client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+        let elements = response.parse_into_elements(&self.client);
+        Ok(elements)
+    }
+}
+
+// Contains Document Handling
+impl WebDriver {
+    /// Executes the given script synchronously and returns the result
+    pub fn execute_script<T: serde::de::DeserializeOwned>(&self, script: &str, args: &[serde_json::Value]) -> reqwest::Result<T> {
+        let sess_id = self.session_id.clone().unwrap();
+        let url = construct_url(vec!["session/", &(sess_id + "/"), "execute/sync"]);
+        let payload = ExecuteScriptRequest::new(script.to_string(), args.to_owned());
+        let response: ExecuteScriptResponse<T> = self.client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+        Ok(response.value)
     }
 }
 

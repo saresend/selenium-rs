@@ -18,6 +18,15 @@ fn test_get_multiple_elements() {
 }
 
 #[test]
+fn test_get_element_list() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    assert_eq!(driver.query_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
+    assert!(driver.query_elements(Selector::CSS, "a").unwrap().len() > 1);
+}
+
+#[test]
 fn test_is_selected() {
     let mut driver = WebDriver::new(Browser::Chrome);
     let search_form = get_element(&mut driver);
@@ -55,6 +64,5 @@ fn test_css_value() {
 fn test_get_text() {
     let mut driver = WebDriver::new(Browser::Chrome);
     let search_form = get_element(&mut driver);
-    let result = "About Store\nGmail\nImages\nSign in";
-    assert!(search_form.get_text().unwrap() == result);
+    assert!(search_form.get_text().unwrap().contains("Gmail\n"));
 }
