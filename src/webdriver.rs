@@ -158,7 +158,7 @@ impl WebDriver {
 // Contains Element Handling
 impl WebDriver {
     /// Requests an elements from the webpage, given the specified selector and query string
-    pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
+    pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
         let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
@@ -173,7 +173,7 @@ impl WebDriver {
     }
 
     /// Requests a list of elements from the webpage, given the specified selector and query string
-    pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+    pub fn find_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "elements"]);
         let payload = ElementRequest::new(str_for_selector(selector), query.to_string());

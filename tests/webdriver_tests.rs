@@ -20,7 +20,7 @@ fn test_element_search_by_id() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
-    driver.query_element(Selector::CSS, "#searchform").is_ok();
+    driver.find_element(Selector::CSS, "#searchform").is_ok();
 }
 
 #[test]

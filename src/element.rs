@@ -14,7 +14,7 @@
         let mut driver = WebDriver::new(Browser::Chrome);
         driver.start_session();
         driver.navigate("http://www.google.com");
-        let search_form =  driver.query_element(Selector::CSS, "#searchform").unwrap();
+        let search_form =  driver.find_element(Selector::CSS, "#searchform").unwrap();
 
         assert!(search_form.get_css_value("min-width").unwrap() == "980px");
     ```

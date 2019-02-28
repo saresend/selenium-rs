@@ -5,7 +5,7 @@ use selenium_rs::webdriver::{Browser, Selector, WebDriver};
 fn get_element(driver: &mut WebDriver) -> Element {
     driver.start_session();
     driver.navigate("http://google.com");
-    driver.query_element(Selector::CSS, "#searchform").unwrap()
+    driver.find_element(Selector::CSS, "#searchform").unwrap()
 }
 
 #[test]
@@ -13,7 +13,7 @@ fn test_get_multiple_elements() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
-    let elements = driver.query_element(Selector::CSS, "a").unwrap();
+    let elements = driver.find_element(Selector::CSS, "a").unwrap();
     println!("{:?}", elements);
 }
 
@@ -22,8 +22,8 @@ fn test_get_element_list() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
-    assert_eq!(driver.query_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
-    assert!(driver.query_elements(Selector::CSS, "a").unwrap().len() > 1);
+    assert_eq!(driver.find_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
+    assert!(driver.find_elements(Selector::CSS, "a").unwrap().len() > 1);
 }
 
 #[test]
