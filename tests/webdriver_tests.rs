@@ -43,3 +43,21 @@ fn test_get_title() {
 
     assert!(title == String::from("Google"));
 }
+
+#[test]
+fn test_forward_back() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session().unwrap();
+    
+    driver.navigate("http://google.com").unwrap();
+    let google_title = driver.get_title().unwrap();
+
+    driver.navigate("https://www.rust-lang.org").unwrap();
+    let rustlang_title = driver.get_title().unwrap();
+
+    driver.back().unwrap();
+    assert!(driver.get_title().unwrap() == google_title);
+
+    driver.forward().unwrap();
+    assert!(driver.get_title().unwrap() == rustlang_title);
+}

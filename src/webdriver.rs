@@ -147,6 +147,13 @@ impl WebDriver {
         Ok(())
     }
 
+    pub fn forward(&self) -> reqwest::Result<()> {
+        let sess_id = self.session_id.clone().unwrap();
+        let nav_url = construct_url(vec!["session/", &(sess_id + "/"), "forward"]);
+        self.client.post(nav_url).send()?.error_for_status()?;
+        Ok(())
+    }
+
     pub fn back(&self) -> reqwest::Result<()> {
         let sess_id = self.session_id.clone().unwrap();
         let nav_url = construct_url(vec!["session/", &(sess_id + "/"), "back"]);
