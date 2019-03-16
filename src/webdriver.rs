@@ -158,6 +158,12 @@ impl WebDriver {
 // Contains Element Handling
 impl WebDriver {
     /// Requests an elements from the webpage, given the specified selector and query string
+    #[deprecated(since = "0.1.2" note = "query_element does not follow WebDriver naming convention, use find_element")]
+    pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
+        find_element(self, selector, query)
+    }
+
+    /// Requests an elements from the webpage, given the specified selector and query string
     pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
