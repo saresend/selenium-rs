@@ -16,12 +16,21 @@ fn test_navigation() {
 }
 
 #[test]
-fn test_element_search_by_id() {
+fn test_element_search_by_id_find() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
     driver.find_element(Selector::CSS, "#searchform").is_ok();
 }
+
+#[test]
+fn test_element_search_by_id_query() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    driver.query_element(Selector::CSS, "#searchform").is_ok();
+}
+
 
 #[test]
 fn test_get_current_url() {

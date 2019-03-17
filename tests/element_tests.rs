@@ -9,7 +9,7 @@ fn get_element(driver: &mut WebDriver) -> Element {
 }
 
 #[test]
-fn test_get_multiple_elements() {
+fn test_get_multiple_elements_find() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
@@ -18,12 +18,30 @@ fn test_get_multiple_elements() {
 }
 
 #[test]
-fn test_get_element_list() {
+fn test_get_multiple_elements_query() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    let elements = driver.query_element(Selector::CSS, "a").unwrap();
+    println!("{:?}", elements);
+}
+
+#[test]
+fn test_get_element_list_find() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session();
     driver.navigate("http://google.com");
     assert_eq!(driver.find_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
     assert!(driver.find_elements(Selector::CSS, "a").unwrap().len() > 1);
+}
+
+#[test]
+fn test_get_element_list_query() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session();
+    driver.navigate("http://google.com");
+    assert_eq!(driver.query_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
+    assert!(driver.query_elements(Selector::CSS, "a").unwrap().len() > 1);
 }
 
 #[test]
