@@ -37,10 +37,10 @@ let mut driver = WebDriver::new(Browser::Chrome);
 
 driver.start_session();
 driver.navigate("http://google.com");
-let search_bar = driver.query_element(Selector::CSS, "input[maxlength=\"2048\"]").unwrap();
+let search_bar = driver.find_element(Selector::CSS, "input[maxlength=\"2048\"]").unwrap();
 
 search_bar.type_text("selenium-rs github");
-let search_button = driver.query_element(Selector::CSS, "input[name=\"btnK\"]").unwrap();
+let search_button = driver.find_element(Selector::CSS, "input[name=\"btnK\"]").unwrap();
 search_button.click();
 search_button.click();
 ```
@@ -53,7 +53,7 @@ use selenium_rs::element::Element;
 let mut driver = WebDriver::new(Browser::Chrome);
 driver.start_session();
 driver.navigate("http://www.google.com");
-let search_form =  driver.query_element(Selector::CSS, "#searchform").unwrap();
+let search_form =  driver.find_element(Selector::CSS, "#searchform").unwrap();
 assert!(search_form.get_css_value("min-width").unwrap() == "980px");
 ```
 

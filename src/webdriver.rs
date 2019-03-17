@@ -165,7 +165,13 @@ impl WebDriver {
 // Contains Element Handling
 impl WebDriver {
     /// Requests an elements from the webpage, given the specified selector and query string
+    #[deprecated(since = "0.1.2", note = "query_element does not follow WebDriver naming convention, use find_element")]
     pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
+        self.find_element(selector, query)
+    }
+
+    /// Requests an elements from the webpage, given the specified selector and query string
+    pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
         let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
@@ -180,7 +186,13 @@ impl WebDriver {
     }
 
     /// Requests a list of elements from the webpage, given the specified selector and query string
+    #[deprecated(since = "0.1.2", note = "query_elements does not follow WebDriver naming convention, use find_elements")]
     pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+        self.find_elements(selector, query)
+    }
+
+    /// Requests a list of elements from the webpage, given the specified selector and query string
+    pub fn find_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "elements"]);
         let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
