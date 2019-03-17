@@ -158,9 +158,9 @@ impl WebDriver {
 // Contains Element Handling
 impl WebDriver {
     /// Requests an elements from the webpage, given the specified selector and query string
-    #[deprecated(since = "0.1.2" note = "query_element does not follow WebDriver naming convention, use find_element")]
+    #[deprecated(since = "0.1.2", note = "query_element does not follow WebDriver naming convention, use find_element")]
     pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
-        find_element(self, selector, query)
+        self.find_element(selector, query)
     }
 
     /// Requests an elements from the webpage, given the specified selector and query string
@@ -176,6 +176,12 @@ impl WebDriver {
             .json()?;
         let element = response.parse_into_element(&self.client);
         Ok(element)
+    }
+
+    /// Requests a list of elements from the webpage, given the specified selector and query string
+    #[deprecated(since = "0.1.2", note = "query_elements does not follow WebDriver naming convention, use find_elements")]
+    pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+        self.find_elements(selector, query)
     }
 
     /// Requests a list of elements from the webpage, given the specified selector and query string
