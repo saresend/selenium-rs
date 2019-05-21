@@ -32,5 +32,13 @@ pub fn str_for_selector(selector: Selector) -> String {
         Selector::PartialLinkText => String::from("partial link text"),
         Selector::TagName => String::from("tag name"),
         Selector::XPath => String::from("xpath"),
+        Selector::ID => String::from("css selector"),
+    }
+}
+
+pub fn query_string_for_selector(selector: Selector, query: &str) -> String {
+    match selector {
+        Selector::ID => format!("#{}", query),
+        _ => query.to_owned(),
     }
 }
