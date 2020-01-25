@@ -6,6 +6,7 @@ pub struct SelectedResponse {
     pub value: bool,
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 pub struct ElementResponse {
     #[serde(rename = "sessionId")]
@@ -14,6 +15,7 @@ pub struct ElementResponse {
     value: ElemValue,
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 pub struct ElementsResponse {
     #[serde(rename = "sessionId")]
@@ -41,6 +43,7 @@ impl<'a> ElementsResponse {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 pub struct AttributeResponse {
     #[serde(rename = "sessionId")]
@@ -59,6 +62,7 @@ impl<'a> ValueRequest<'a> {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 pub struct ExecuteScriptResponse<T> {
     #[serde(rename = "sessionId")]
