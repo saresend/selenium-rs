@@ -1,17 +1,17 @@
-/*! 
-    
-    This provides the primary point of interaction with the Selenium WebDriver API. We 
-    can use it to create and manage sessions, as well as use it to spawn elements from the 
-    current browsing context. 
+/*!
 
-    # Example - Navigating to a web page 
+    This provides the primary point of interaction with the Selenium WebDriver API. We
+    can use it to create and manage sessions, as well as use it to spawn elements from the
+    current browsing context.
 
-    ```rust 
+    # Example - Navigating to a web page
+
+    ```rust
     use selenium_rs::webdriver::{Browser,WebDriver};
-    
+
     let mut driver= WebDriver::new(Browser::Chrome);
     driver.start_session();
-    driver.navigate("https://www.rust-lang.org"); 
+    driver.navigate("https://www.rust-lang.org");
     assert_eq!(driver.get_current_url().unwrap(), String::from("https://www.rust-lang.org/"));
     ```
 */
@@ -23,17 +23,20 @@ use session_structs::{NewSessionRequest, NewSessionResponse, TitleResponse};
 use std::collections::HashMap;
 use utils::*;
 
+#[derive(Clone, Copy, Debug)]
 pub enum Browser {
     Chrome,
     Firefox,
 }
 
+#[derive(Clone, Copy, Debug)]
 pub enum Selector {
     CSS,
     LinkText,
     PartialLinkText,
     TagName,
     XPath,
+    ID,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -174,7 +177,7 @@ impl WebDriver {
     pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
-        let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
+        let payload = ElementRequest::new(str_for_selector(selector), query_string_for_selector(selector, query));
         let response: ElementResponse = self.client
             .post(url)
             .json(&payload)
