@@ -1,6 +1,7 @@
 use element::Element;
 use reqwest;
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 pub struct SelectedResponse {
     pub value: bool,
@@ -39,7 +40,10 @@ impl<'a> ElementResponse {
 impl<'a> ElementsResponse {
     pub fn parse_into_elements(self, client: &'a reqwest::Client) -> Vec<Element<'a>> {
         let session_id = self.session_id;
-        self.value.into_iter().map(|value| Element::new(value.element_id, session_id.clone(), client)).collect()
+        self.value
+            .into_iter()
+            .map(|value| Element::new(value.element_id, session_id.clone(), client))
+            .collect()
     }
 }
 
