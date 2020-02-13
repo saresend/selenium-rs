@@ -14,6 +14,15 @@ selenium-rs = "0.1.0"
 ```
 
 Note that selenium-rs also requires a running instance of the selenium webdriver, which can be found [here](https://www.seleniumhq.org/download/). Simply download the jar and run it to instantiate the selenium webdriver server. 
+## Setup 
+
+### Start selenium server in one window
+
+```java -jar selenium-server-standalone-3.141.59.jar```
+
+Download Chrome Driver - unpack and put on PATH
+
+http://chromedriver.chromium.org/downloads
 
 ## Documentation: [docs.rs](https://docs.rs/selenium-rs/0.1.0/selenium_rs/)
 
