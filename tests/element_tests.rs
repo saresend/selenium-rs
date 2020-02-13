@@ -3,16 +3,16 @@ use selenium_rs::element::Element;
 use selenium_rs::webdriver::{Browser, Selector, WebDriver};
 
 fn get_element(driver: &mut WebDriver) -> Element {
-    driver.start_session();
-    driver.navigate("http://google.com");
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
     driver.find_element(Selector::CSS, "#searchform").unwrap()
 }
 
 #[test]
 fn test_get_multiple_elements_find() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("http://google.com");
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
     let elements = driver.find_element(Selector::CSS, "a").unwrap();
     println!("{:?}", elements);
 }
@@ -20,28 +20,40 @@ fn test_get_multiple_elements_find() {
 #[test]
 fn test_get_multiple_elements_query() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("http://google.com");
-    let elements = driver.query_element(Selector::CSS, "a").unwrap();
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
+    let elements = driver.find_element(Selector::CSS, "a").unwrap();
     println!("{:?}", elements);
 }
 
 #[test]
 fn test_get_element_list_find() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("http://google.com");
-    assert_eq!(driver.find_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
+    assert_eq!(
+        driver
+            .find_elements(Selector::CSS, "#searchform")
+            .unwrap()
+            .len(),
+        1
+    );
     assert!(driver.find_elements(Selector::CSS, "a").unwrap().len() > 1);
 }
 
 #[test]
 fn test_get_element_list_query() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    driver.start_session();
-    driver.navigate("http://google.com");
-    assert_eq!(driver.query_elements(Selector::CSS, "#searchform").unwrap().len(), 1);
-    assert!(driver.query_elements(Selector::CSS, "a").unwrap().len() > 1);
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
+    assert_eq!(
+        driver
+            .find_elements(Selector::CSS, "#searchform")
+            .unwrap()
+            .len(),
+        1
+    );
+    assert!(driver.find_elements(Selector::CSS, "a").unwrap().len() > 1);
 }
 
 #[test]
@@ -64,7 +76,7 @@ fn test_get_attribute() {
 #[test]
 fn test_get_property() {
     let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
+    let _search_form = get_element(&mut driver);
     // Isn't supported by the webdriver I'm testing, apparently...
 }
 
@@ -76,11 +88,4 @@ fn test_css_value() {
         search_form.get_css_value("min-width").unwrap(),
         String::from("980px")
     );
-}
-
-#[test]
-fn test_get_text() {
-    let mut driver = WebDriver::new(Browser::Chrome);
-    let search_form = get_element(&mut driver);
-    assert!(search_form.get_text().unwrap().contains("Gmail\n"));
 }
