@@ -16,7 +16,7 @@ keywords = ["selenium", "testing", "browser", "automation"]
 
 
 [dependencies]
-reqwest = "0.9.5"
+reqwest = "0.9.18"
 url = "1.7.1"
 serde = "1.0.71"
 serde_json = "1.0.26"
