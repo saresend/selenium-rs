@@ -18,6 +18,29 @@ fn test_get_multiple_elements_find() {
 }
 
 #[test]
+fn test_find_single_element_under_element() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
+    let parent_element = driver.find_element(Selector::CSS, "html").unwrap();
+
+    let meta_elements_under_parent = parent_element.find_element(Selector::CSS, ".csi").unwrap();
+    println!("{:?}", meta_elements_under_parent);
+}
+
+#[test]
+fn test_find_multiple_elements_under_element() {
+    let mut driver = WebDriver::new(Browser::Chrome);
+    driver.start_session().unwrap();
+    driver.navigate("http://google.com").unwrap();
+    let parent_element = driver.find_element(Selector::CSS, "html").unwrap();
+
+    let meta_elements_under_parent = parent_element.find_elements(Selector::CSS, "meta").unwrap();
+    println!("{:?}", meta_elements_under_parent);
+    assert!(!meta_elements_under_parent.is_empty())
+}
+
+#[test]
 fn test_get_multiple_elements_query() {
     let mut driver = WebDriver::new(Browser::Chrome);
     driver.start_session().unwrap();

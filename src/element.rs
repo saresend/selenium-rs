@@ -1,13 +1,13 @@
-/*! 
+/*!
 
     Element enables most of the site interaction, and wraps user interactions such as typing text and clicking
     on things. Note that each element is tied to the specific session (currently, we
     can't hold on to the same element across sessions).
 
 
-    # Example - Inspecting attributes of an element 
+    # Example - Inspecting attributes of an element
 
-    ```rust 
+    ```rust
         use selenium_rs::webdriver::{Selector, Browser, WebDriver};
         use selenium_rs::element::Element;
 
@@ -23,6 +23,11 @@
 use element_structs::*;
 use reqwest;
 use utils::construct_url;
+
+use crate::{
+    utils::{query_string_for_selector, str_for_selector},
+    webdriver::{ElementRequest, Selector},
+};
 
 /// Element provides an interface from which to inspect and interact with the requested elements
 /// on the page. The general flow involves navigating to your webpage in question, and then
@@ -168,5 +173,63 @@ impl<'a> Element<'a> {
             .error_for_status()?;
 
         Ok(())
+    }
+
+    /// Requests an element from another element (like a parent element), given the specified selector and query string
+    /// <div id="newDiv"> <p class="classUnderDiv">This is the child under our element of interest a div.</p></div>
+    /// let newDiv = driver.find_element(Selector::CSS, "#newDiv").unwrap();
+    /// Now to find the paragraph element classUnderDiv, we do,
+    /// let paragraph = newDiv.find_element(Selector::CSS, ".classUnderDiv").unwrap();
+    pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
+        //let sess_id = self.session_id.clone().unwrap();
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "element",
+        ]);
+        let payload = ElementRequest::new(
+            str_for_selector(selector),
+            query_string_for_selector(selector, query),
+        );
+        let response: ElementResponse = self
+            .client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+        let element = response.parse_into_element(&self.client);
+        Ok(element)
+    }
+
+    /// Requests a list of elements from under an element, given the specified selector and query string
+    /// <div id="newDiv">
+    /// <p class="classUnderDiv">This is the child under our element of interest a div.</p>
+    /// <p class="classUnderDiv">This is the child under our element of interest a div.</p>
+    /// <p class="yetAnotherClassUnderDiv">This is the child under our element of interest a div.</p>
+    /// </div>
+    /// let newDiv = driver.find_element(Selector::CSS, "#newDiv").unwrap();
+    /// Now to find all the paragraph elements under newDiv, we do,
+    /// let paragraphs = newDiv.find_elements(Selector::CSS, "p").unwrap();
+    pub fn find_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
+        let url = construct_url(vec![
+            "session/",
+            &(self.session_id.clone() + "/"),
+            "element/",
+            &(self.element_id.clone() + "/"),
+            "elements",
+        ]);
+        let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
+        let response: ElementsResponse = self
+            .client
+            .post(url)
+            .json(&payload)
+            .send()?
+            .error_for_status()?
+            .json()?;
+        let elements = response.parse_into_elements(&self.client);
+        Ok(elements)
     }
 }
