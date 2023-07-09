@@ -40,7 +40,7 @@ pub enum Selector {
 }
 
 #[derive(Serialize, Deserialize)]
-struct ElementRequest {
+pub struct ElementRequest {
     using: String,
     value: String,
 }
@@ -96,7 +96,8 @@ impl WebDriver {
         let body = NewSessionRequest::new(&self.browser);
         let url = construct_url(vec!["session/"]);
 
-        let response: NewSessionResponse = self.client
+        let response: NewSessionResponse = self
+            .client
             .post(url)
             .json(&body)
             .send()?
@@ -168,7 +169,10 @@ impl WebDriver {
 // Contains Element Handling
 impl WebDriver {
     /// Requests an elements from the webpage, given the specified selector and query string
-    #[deprecated(since = "0.1.2", note = "query_element does not follow WebDriver naming convention, use find_element")]
+    #[deprecated(
+        since = "0.1.2",
+        note = "query_element does not follow WebDriver naming convention, use find_element"
+    )]
     pub fn query_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         self.find_element(selector, query)
     }
@@ -177,8 +181,12 @@ impl WebDriver {
     pub fn find_element(&self, selector: Selector, query: &str) -> reqwest::Result<Element> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "element"]);
-        let payload = ElementRequest::new(str_for_selector(selector), query_string_for_selector(selector, query));
-        let response: ElementResponse = self.client
+        let payload = ElementRequest::new(
+            str_for_selector(selector),
+            query_string_for_selector(selector, query),
+        );
+        let response: ElementResponse = self
+            .client
             .post(url)
             .json(&payload)
             .send()?
@@ -189,7 +197,10 @@ impl WebDriver {
     }
 
     /// Requests a list of elements from the webpage, given the specified selector and query string
-    #[deprecated(since = "0.1.2", note = "query_elements does not follow WebDriver naming convention, use find_elements")]
+    #[deprecated(
+        since = "0.1.2",
+        note = "query_elements does not follow WebDriver naming convention, use find_elements"
+    )]
     pub fn query_elements(&self, selector: Selector, query: &str) -> reqwest::Result<Vec<Element>> {
         self.find_elements(selector, query)
     }
@@ -199,7 +210,8 @@ impl WebDriver {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "elements"]);
         let payload = ElementRequest::new(str_for_selector(selector), query.to_string());
-        let response: ElementsResponse = self.client
+        let response: ElementsResponse = self
+            .client
             .post(url)
             .json(&payload)
             .send()?
@@ -213,11 +225,16 @@ impl WebDriver {
 // Contains Document Handling
 impl WebDriver {
     /// Executes the given script synchronously and returns the result
-    pub fn execute_script<T: serde::de::DeserializeOwned>(&self, script: &str, args: &[serde_json::Value]) -> reqwest::Result<T> {
+    pub fn execute_script<T: serde::de::DeserializeOwned>(
+        &self,
+        script: &str,
+        args: &[serde_json::Value],
+    ) -> reqwest::Result<T> {
         let sess_id = self.session_id.clone().unwrap();
         let url = construct_url(vec!["session/", &(sess_id + "/"), "execute/sync"]);
         let payload = ExecuteScriptRequest::new(script.to_string(), args.to_owned());
-        let response: ExecuteScriptResponse<T> = self.client
+        let response: ExecuteScriptResponse<T> = self
+            .client
             .post(url)
             .json(&payload)
             .send()?
